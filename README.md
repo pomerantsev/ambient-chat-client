@@ -1,8 +1,8 @@
 A simple client for the Ambient chat server.
 To run:
-* `npm install`
-* `bower install`
-* `grunt`
+- `npm install`
+- `bower install`
+- `grunt`
 -----
 To actually see anything, first create a message between two users in Redis. A basic message looks like:
 `{from: 'userId1', to: 'userId2', text: 'blah blah'}`.
