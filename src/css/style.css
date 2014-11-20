@@ -1,0 +1,48 @@
+body {
+  max-width: 600px;
+  margin: 20px auto 0;
+}
+
+.user-list {
+  float: left;
+  width: 20%;
+  padding-left: 20px;
+
+  line-height: 200%;
+}
+
+.user-list--user {
+  cursor: pointer;
+  position: relative;
+  width: 80%;
+}
+
+.user-list--user.unread-messages:after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: green;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.user-list--user.active {
+  background-color: #eed;
+}
+
+.messages {
+  float: right;
+  width: 70%;
+}
+
+.message__mine {
+  text-align: right;
+  color: blue;
+}
+
+.message__other {
+  color: red;
+}

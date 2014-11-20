@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+  <title>chat-client</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body ng-app="app" ng-controller="ChatController as chat">
+  <div ng-if="!chat.isLoggedIn()">
+    <label>
+      Username:
+      <input ng-model="chat.userId">
+    </label>
+    <button ng-click="chat.login(chat.userId)">Connect</button>
+  </div>
+  <h3 ng-if="chat.isLoggedIn()">
+    Connected as {{chat.userId}}
+    <a href ng-click="chat.logout()">logout</a>
+  </h3>
+  <div ng-if="chat.isLoggedIn()">
+    <div class="user-list">
+      <div class="user-list--user"
+           ng-repeat="dialog in chat.getDialogs()"
+           ng-class="{'unread-messages': dialog.unreadMessageCount,
+                      'active': dialog.active}">
+        <a ng-click="chat.openDialog($index)">{{dialog._id}}</a>
+      </div>
+    </div>
+    <div class="messages">
+      <div ng-repeat="message in chat.getCurrentDialog() | orderBy:'time'"
+           ng-class="{message__mine: message.from === chat.userId,
+                      message__other: message.from !== chat.userId}">
+        {{message.text}} ({{message.time}})
+      </div>
+      <form>
+        <input ng-model="chat.text">
+        <button ng-click="chat.sendMessage()">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="bower_components/socket.io-client/socket.io.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-socket-io/socket.js"></script>
+  <script src="js/script.js"></script>
+</body>
+
+</html>
