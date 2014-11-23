@@ -2,6 +2,7 @@ angular.module('app', ['btford.socket-io'])
   .controller('ChatController', function (Chat, Connection) {
     this.getDialogs = Chat.getDialogs;
     this.openDialog = Chat.openDialog;
+    this.createDialog = Chat.createDialog;
     this.getCurrentDialog = Chat.getCurrentDialog;
     this.sendMessage = function () {
       Chat.sendMessage(this.text);
@@ -89,6 +90,18 @@ angular.module('app', ['btford.socket-io'])
     }
   })
   .factory('Chat', function (socket) {
+    function openDialog(dialog) {
+      socket.emit('startSession', dialog._id, function (messages) {
+        console.log('Started or restarted session with', dialog._id);
+        currentSession = dialog._id;
+        currentDialog = messages;
+        dialogs.forEach(function (dialog) {
+          dialog.active = false;
+        });
+        dialog.active = true;
+      });
+    }
+
     var dialogs = [];
 
     var currentDialog = [];
@@ -102,17 +115,19 @@ angular.module('app', ['btford.socket-io'])
       setDialogs: function (newValue) {
         dialogs = newValue;
       },
-      openDialog: function (index) {
-        var dialog = dialogs[index];
-        socket.emit('startSession', dialog._id, function (messages) {
-          console.log('Started or restarted session with', dialog._id);
-          currentSession = dialog._id;
-          currentDialog = messages;
-          dialogs.forEach(function (dialog) {
-            dialog.active = false;
-          });
-          dialog.active = true;
-        });
+      openDialog: openDialog,
+      createDialog: function () {
+        var newUserId = prompt('The name of the user you wish to start a dialog with:');
+        if (dialogs.filter(function (dialog) { return dialog._id === newUserId; }).length) {
+          alert('User already exists');
+        } else {
+          var newDialog = {
+            _id: newUserId,
+            unreadMessageCount: 0
+          };
+          dialogs.push(newDialog);
+          openDialog(newDialog);
+        }
       },
       getCurrentSession: function () {
         return currentSession;

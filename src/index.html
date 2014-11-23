@@ -26,7 +26,11 @@
            ng-repeat="dialog in chat.getDialogs()"
            ng-class="{'unread-messages': dialog.unreadMessageCount,
                       'active': dialog.active}">
-        <a ng-click="chat.openDialog($index)">{{dialog._id}}</a>
+        <a ng-click="chat.openDialog(dialog)">{{dialog._id}}</a>
+      </div>
+      <hr>
+      <div class="user-list--user">
+        <a ng-click="chat.createDialog()">+ New dialog</a>
       </div>
     </div>
     <div class="messages">
