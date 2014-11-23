@@ -9,13 +9,13 @@
 </head>
 
 <body ng-app="app" ng-controller="ChatController as chat">
-  <div ng-if="!chat.isLoggedIn()">
+  <form ng-if="!chat.isLoggedIn()">
     <label>
       Username:
       <input ng-model="chat.userId">
     </label>
     <button ng-click="chat.login(chat.userId)">Connect</button>
-  </div>
+  </form>
   <h3 ng-if="chat.isLoggedIn()">
     Connected as {{chat.userId}}
     <a href ng-click="chat.logout()">logout</a>
