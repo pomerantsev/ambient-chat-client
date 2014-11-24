@@ -16,7 +16,7 @@ angular.module('app', ['btford.socket-io'])
   .factory('socket', function ($window, socketFactory) {
     return socketFactory({
       prefix: '',
-      ioSocket: $window.io.connect('http://192.168.1.34:8080')
+      ioSocket: $window.io.connect('http://localhost:8080')
     });
   })
   .factory('Connection', function ($q, socket, Chat) {
